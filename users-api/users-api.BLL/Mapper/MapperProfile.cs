@@ -6,7 +6,7 @@ namespace users_api.BLL.Mapper
 {
     public class MapperProfile : Profile
     {
-        public MapperProfile() 
+        public MapperProfile()
         {
             CreateMap<User, UserDTO>().ForMember(dest => dest.Role,
                                                  opt => opt.MapFrom(src => src.Role.ToString()));

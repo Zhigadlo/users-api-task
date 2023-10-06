@@ -5,7 +5,7 @@ namespace users_api.BLL.Validation
 {
     public class UserValidator : AbstractValidator<User>
     {
-        public UserValidator() 
+        public UserValidator()
         {
             RuleFor(u => u.Name).NotEmpty();
             RuleFor(u => u.Age).Must(a => a > 0);

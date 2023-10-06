@@ -12,7 +12,7 @@ namespace users_api.BLL.Services
         private UsersContext _context;
         private IMapper _mapper;
         private UserValidator _validator;
-        public UserService(UsersContext context, IMapper mapper) 
+        public UserService(UsersContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -54,7 +54,7 @@ namespace users_api.BLL.Services
         public IEnumerable<UserDTO> GetAll(bool isTracking = true)
         {
             var users = _context.Users;
-            if(!isTracking)
+            if (!isTracking)
                 return _mapper.Map<IEnumerable<UserDTO>>(users.AsNoTracking());
 
             return _mapper.Map<IEnumerable<UserDTO>>(users);
