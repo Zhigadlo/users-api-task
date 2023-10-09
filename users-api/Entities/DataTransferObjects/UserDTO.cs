@@ -1,4 +1,4 @@
-﻿namespace users_api.BLL.DTO
+﻿namespace Entities.DataTransferObjects
 {
     public class UserDTO
     {
