@@ -14,5 +14,6 @@ namespace users_api.DAL.Repositories
         public void DeleteUserRole(UserRole userRole) => Delete(userRole);
         public IEnumerable<UserRole> GetAllUserRoles(bool trackChanges) => FindAll(trackChanges).ToList();
         public UserRole? GetUserRole(int id, bool trackChanges) => FindByCondition(p => p.Id.Equals(id), trackChanges).SingleOrDefault();
+        public void UpdateUserRole(UserRole userRole) => Update(userRole);
     }
 }

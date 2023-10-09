@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\users-api.BLL\users-api.BLL.csproj" />
     <ProjectReference Include="..\users-api.DAL\users-api.DAL.csproj" />
   </ItemGroup>
