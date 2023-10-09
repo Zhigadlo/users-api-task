@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using users_api.DAL.EF.EntityTypeConfigurations;
-using users_api.DAL.Models;
 
 namespace users_api.DAL.EF
 {
     public class UsersContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         public UsersContext(DbContextOptions<UsersContext> options) : base(options)
         {
@@ -15,6 +16,8 @@ namespace users_api.DAL.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
         }
     }
 }

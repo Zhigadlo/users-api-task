@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using users_api.DAL.Models;
 
 namespace users_api.DAL.EF.EntityTypeConfigurations
 {
@@ -9,43 +9,43 @@ namespace users_api.DAL.EF.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id);
-            builder.Property(x => x.Name);
-            builder.Property(x => x.Age);
-            builder.Property(x => x.Email);
-            builder.Property(x => x.Role);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.Age).IsRequired();
+            builder.Property(x => x.Email).IsRequired();
+
+            builder.HasMany(u => u.Roles)
+                   .WithMany(r => r.Users)
+                   .UsingEntity<UserRole>();
+
             builder.HasData(
                 new User()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 11,
                     Name = "Vladislav",
                     Age = 20,
-                    Email = "vladislav@gmail.com",
-                    Role = Role.User
+                    Email = "vladislav@gmail.com"
                 },
                 new User()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 12,
                     Name = "Ivan",
                     Age = 21,
-                    Email = "ivan@gmail.com",
-                    Role = Role.Support
+                    Email = "ivan@gmail.com"
                 },
                 new User()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 13,
                     Name = "Aleksandr",
                     Age = 22,
-                    Email = "aleksandr@gmail.com",
-                    Role = Role.SuperAdmin
+                    Email = "aleksandr@gmail.com"
                 },
                 new User()
                 {
-                    Id = Guid.NewGuid(),
-                    Name = "Admin",
+                    Id = 14,
+                    Name = "name",
                     Age = 35,
-                    Email = "admin@gmail.com",
-                    Role = Role.Admin
+                    Email = "name@gmail.com"
                 }
             );
         }
