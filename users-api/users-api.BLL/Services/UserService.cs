@@ -1,74 +1,64 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using users_api.BLL.DTO;
+using Contracts;
+using Entities;
+using Entities.DataTransferObjects;
 using users_api.BLL.Validation;
-using users_api.DAL.EF;
-using users_api.DAL.Models;
 
 namespace users_api.BLL.Services
 {
-    public class UserService
+    public class UserService : IService<UserDTO>
     {
-        private UsersContext _context;
+        private IRepositoryManager _repository;
         private IMapper _mapper;
         private UserValidator _validator;
-        public UserService(UsersContext context, IMapper mapper)
+        public UserService(IRepositoryManager repository, IMapper mapper)
         {
-            _context = context;
+            _repository = repository;
             _mapper = mapper;
             _validator = new UserValidator();
         }
 
-        public async Task<UserDTO?> CreateAsync(UserDTO item)
+        public UserDTO? Create(UserDTO item)
         {
             User user = _mapper.Map<User>(item);
             var result = _validator.Validate(user);
             if (!result.IsValid)
                 return null;
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            _repository.User.CreateUser(user);
             return item;
         }
 
-        public async Task<UserDTO?> DeleteAsync(Guid id)
+        public UserDTO? Delete(int id)
         {
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            User? user = _repository.User.GetUser(id, false);
             if (user == null)
                 return null;
 
-            var userDTO = _mapper.Map<UserDTO>(user);
-
-            _context.Users.Remove(user);
-
-            await _context.SaveChangesAsync();
-            return userDTO;
-        }
-
-        public async Task<UserDTO?> GetAsync(Guid id, bool isTracking = true)
-        {
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            _repository.User.DeleteUser(user);
             return _mapper.Map<UserDTO>(user);
         }
 
-        public IEnumerable<UserDTO> GetAll(bool isTracking = true)
+        public UserDTO? Get(int id, bool isTracking = false)
         {
-            var users = _context.Users;
-            if (!isTracking)
-                return _mapper.Map<IEnumerable<UserDTO>>(users.AsNoTracking());
-
-            return _mapper.Map<IEnumerable<UserDTO>>(users);
+            User? user = _repository.User.GetUser(id, isTracking);
+            return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<UserDTO?> UpdateAsync(UserDTO item)
+        public IQueryable<UserDTO> GetAll(bool isTracking = false)
+        {
+            var users = _repository.User.GetAllUsers(isTracking);
+            return _mapper.Map<IQueryable<UserDTO>>(users);
+        }
+
+        public UserDTO? Update(UserDTO item)
         {
             User user = _mapper.Map<User>(item);
             var result = _validator.Validate(user);
             if (!result.IsValid)
                 return null;
 
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            _repository.User.UpdateUser(user);
             return item;
         }
     }
