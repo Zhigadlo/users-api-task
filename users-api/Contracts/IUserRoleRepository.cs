@@ -8,5 +8,6 @@ namespace Contracts
         UserRole? GetUserRole(int id, bool trackChanges);
         void CreateUserRole(UserRole userRole);
         void DeleteUserRole(UserRole userRole);
+        void UpdateUserRole(UserRole userRole);
     }
 }
