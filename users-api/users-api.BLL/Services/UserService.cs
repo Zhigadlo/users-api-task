@@ -3,8 +3,10 @@ using Contracts.Repository;
 using Contracts.Service;
 using Entities;
 using Entities.DataTransferObjects;
+using Entities.Exceptions;
 using Entities.FilterModels;
 using Entities.Pagination;
+using Microsoft.EntityFrameworkCore;
 using users_api.BLL.Validation;
 
 namespace users_api.BLL.Services
@@ -26,9 +28,22 @@ namespace users_api.BLL.Services
             User user = _mapper.Map<User>(item);
             var result = _validator.Validate(user);
             if (!result.IsValid)
-                return null;
+            {
+                string message = "";
+                result.Errors.ForEach(e => message += e.ErrorMessage);
+                throw new EntityIsNotValidException(message);
+            }
 
             _repository.User.CreateUser(user);
+            try
+            {
+                _repository.Save();
+            }
+            catch (DbUpdateException)
+            {
+                throw new EmailIsNotUniqueException();
+            }
+
             _repository.Save();
             return _mapper.Map<UserDTO>(user);
         }
@@ -37,7 +52,7 @@ namespace users_api.BLL.Services
         {
             User? user = _repository.User.GetUser(id, false);
             if (user == null)
-                return null;
+                throw new NotFoundException($"User with id {id} not found");
 
             _repository.User.DeleteUser(user);
             _repository.Save();
@@ -59,7 +74,7 @@ namespace users_api.BLL.Services
         public IEnumerable<UserDTO> GetPage(PaginationModel paginationModel, UserFilterModel filterModel)
         {
             IQueryable<User>? users = _repository.User.GetAllUsers(false);
-                                                 
+
             users = UserFilter(filterModel, users);
             users = UserSort(filterModel.SortType, users);
             users = UserPagination(paginationModel, users);
@@ -71,7 +86,11 @@ namespace users_api.BLL.Services
             User user = _mapper.Map<User>(item);
             var result = _validator.Validate(user);
             if (!result.IsValid)
-                return null;
+            {
+                string message = "";
+                result.Errors.ForEach(e => message += e.ErrorMessage);
+                throw new EntityIsNotValidException(message);
+            }
 
             _repository.User.UpdateUser(user);
             _repository.Save();

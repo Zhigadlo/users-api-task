@@ -3,6 +3,7 @@ using Contracts.Repository;
 using Contracts.Service;
 using Entities;
 using Entities.DataTransferObjects;
+using Entities.Exceptions;
 using users_api.BLL.Validation;
 
 namespace users_api.BLL.Services
@@ -23,7 +24,11 @@ namespace users_api.BLL.Services
             Role role = _mapper.Map<Role>(entity);
             var result = _validator.Validate(role);
             if (!result.IsValid)
-                return null;
+            {
+                string message = "";
+                result.Errors.ForEach(e => message += e.ErrorMessage);
+                throw new EntityIsNotValidException(message);
+            }
 
             _repository.Role.CreateRole(role);
             _repository.Save();
@@ -34,7 +39,7 @@ namespace users_api.BLL.Services
         {
             Role? role = _repository.Role.GetRole(id, false);
             if (role == null)
-                return null;
+                throw new NotFoundException("Role with id {id} not found");
 
             _repository.Role.DeleteRole(role);
             _repository.Save();
@@ -58,7 +63,11 @@ namespace users_api.BLL.Services
             Role role = _mapper.Map<Role>(entity);
             var result = _validator.Validate(role);
             if (!result.IsValid)
-                return null;
+            {
+                string message = "";
+                result.Errors.ForEach(e => message += e.ErrorMessage);
+                throw new EntityIsNotValidException(message);
+            }
 
             _repository.Role.UpdateRole(role);
             _repository.Save();
