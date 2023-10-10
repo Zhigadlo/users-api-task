@@ -47,10 +47,10 @@ namespace users_api.BLL.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public IEnumerable<UserDTO> GetAll(bool isTracking = false)
+        public IEnumerable<UserDTO>? GetAll(bool isTracking = false)
         {
             var users = _repository.User.GetAllUsers(isTracking);
-            return _mapper.Map<IEnumerable<UserDTO>>(users);
+            return _mapper.Map<IEnumerable<UserDTO>?>(users);
         }
 
         public UserDTO? Update(UserForUpdateDTO item)
