@@ -7,7 +7,7 @@ using users_api.BLL.Validation;
 
 namespace users_api.BLL.Services
 {
-    public class UserRoleService : IService<UserRoleDTO, UserRoleForCreationDTO, UserRoleForUpdateDTO>
+    public class UserRoleService : IUserRoleService
     {
         private IRepositoryManager _repository;
         private IMapper _mapper;

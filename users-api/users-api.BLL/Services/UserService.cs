@@ -3,11 +3,13 @@ using Contracts.Repository;
 using Contracts.Service;
 using Entities;
 using Entities.DataTransferObjects;
+using Entities.FilterModels;
+using Entities.Pagination;
 using users_api.BLL.Validation;
 
 namespace users_api.BLL.Services
 {
-    public class UserService : IService<UserDTO, UserForCreationDTO, UserForUpdateDTO>
+    public class UserService : IUserService
     {
         private IRepositoryManager _repository;
         private IMapper _mapper;
@@ -54,6 +56,16 @@ namespace users_api.BLL.Services
             return _mapper.Map<IEnumerable<UserDTO>?>(users);
         }
 
+        public IEnumerable<UserDTO> GetPage(PaginationModel paginationModel, UserFilterModel filterModel)
+        {
+            IQueryable<User>? users = _repository.User.GetAllUsers(false);
+                                                 
+            users = UserFilter(filterModel, users);
+            users = UserSort(filterModel.SortType, users);
+            users = UserPagination(paginationModel, users);
+            return _mapper.Map<IEnumerable<UserDTO>>(users);
+        }
+
         public UserDTO? Update(UserForUpdateDTO item)
         {
             User user = _mapper.Map<User>(item);
@@ -64,6 +76,56 @@ namespace users_api.BLL.Services
             _repository.User.UpdateUser(user);
             _repository.Save();
             return _mapper.Map<UserDTO>(user);
+        }
+
+        private IQueryable<User> UserFilter(UserFilterModel filterModel, IQueryable<User> users)
+        {
+            users = users.Where(u => u.Name.Contains(filterModel.Name))
+                         .Where(u => u.Email.Contains(filterModel.Email));
+
+            if (filterModel.AgeIsValid())
+                users = users.Where(u => u.Age <= filterModel.MaxAge)
+                             .Where(u => u.Age >= filterModel.MinAge);
+
+            return users;
+        }
+
+        private IQueryable<User> UserSort(string sortType, IQueryable<User> users)
+        {
+            switch (sortType)
+            {
+                case "name_asc":
+                    users = users.OrderBy(u => u.Name);
+                    break;
+                case "name_desc":
+                    users = users.OrderByDescending(u => u.Name);
+                    break;
+                case "age_asc":
+                    users = users.OrderBy(u => u.Age);
+                    break;
+                case "age_desc":
+                    users = users.OrderByDescending(u => u.Age);
+                    break;
+                case "email_asc":
+                    users = users.OrderBy(u => u.Email);
+                    break;
+                case "email_desc":
+                    users = users.OrderByDescending(u => u.Email);
+                    break;
+                default:
+                    users.OrderBy(u => u.Name);
+                    break;
+            }
+
+            return users;
+        }
+
+        private IQueryable<User> UserPagination(PaginationModel paginationModel, IQueryable<User> users)
+        {
+            int totalPages = (int)Math.Ceiling(users.Count() / (double)paginationModel.PageSize);
+            if (paginationModel.PageNumber > totalPages)
+                paginationModel.PageNumber = 1;
+            return users.Skip((paginationModel.PageNumber - 1) * paginationModel.PageSize).Take(paginationModel.PageSize);
         }
     }
 }

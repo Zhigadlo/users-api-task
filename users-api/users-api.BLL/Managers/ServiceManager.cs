@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
 using Contracts.Repository;
 using Contracts.Service;
-using Entities.DataTransferObjects;
 using users_api.BLL.Services;
 
 namespace users_api.BLL.Managers
 {
     public class ServiceManager : IServiceManager
     {
-        private IService<UserDTO, UserForCreationDTO, UserForUpdateDTO>? _userService;
-        private IService<RoleDTO, RoleForCreationDTO, RoleForUpdateDTO>? _roleService;
-        private IService<UserRoleDTO, UserRoleForCreationDTO, UserRoleForUpdateDTO>? _userRoleService;
+        private IUserService? _userService;
+        private IRoleService? _roleService;
+        private IUserRoleService? _userRoleService;
 
         private IRepositoryManager _repositoryManager;
         private IMapper _mapper;
@@ -21,7 +20,7 @@ namespace users_api.BLL.Managers
             _mapper = mapper;
         }
 
-        public IService<UserDTO, UserForCreationDTO, UserForUpdateDTO> User
+        public IUserService User
         {
             get
             {
@@ -32,7 +31,7 @@ namespace users_api.BLL.Managers
             }
         }
 
-        public IService<RoleDTO, RoleForCreationDTO, RoleForUpdateDTO> Role
+        public IRoleService Role
         {
             get
             {
@@ -43,7 +42,7 @@ namespace users_api.BLL.Managers
             }
         }
 
-        public IService<UserRoleDTO, UserRoleForCreationDTO, UserRoleForUpdateDTO> UserRole
+        public IUserRoleService UserRole
         {
             get
             {
