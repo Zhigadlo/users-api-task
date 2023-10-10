@@ -6,7 +6,7 @@ using users_api.BLL.Validation;
 
 namespace users_api.BLL.Services
 {
-    public class RoleService : IService<RoleDTO, RoleForCreationDTO,RoleForUpdateDTO>
+    public class RoleService : IService<RoleDTO, RoleForCreationDTO, RoleForUpdateDTO>
     {
         private IRepositoryManager _repository;
         private IMapper _mapper;
@@ -25,6 +25,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.Role.CreateRole(role);
+            _repository.Save();
             return _mapper.Map<RoleDTO>(role);
         }
 
@@ -35,6 +36,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.Role.DeleteRole(role);
+            _repository.Save();
             return _mapper.Map<RoleDTO>(role);
         }
 
@@ -46,8 +48,8 @@ namespace users_api.BLL.Services
 
         public IEnumerable<RoleDTO>? GetAll(bool trackChanges)
         {
-            var roles = _repository.User.GetAllUsers(trackChanges);
-            return _mapper.Map<IQueryable<RoleDTO>>(roles);
+            var roles = _repository.Role.GetAllRoles(trackChanges);
+            return _mapper.Map<IEnumerable<RoleDTO>?>(roles);
         }
 
         public RoleDTO? Update(RoleForUpdateDTO entity)
@@ -58,6 +60,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.Role.UpdateRole(role);
+            _repository.Save();
             return _mapper.Map<RoleDTO>(role);
         }
     }

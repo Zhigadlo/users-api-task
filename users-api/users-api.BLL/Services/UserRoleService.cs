@@ -26,6 +26,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.UserRole.CreateUserRole(userRole);
+            _repository.Save();
             return _mapper.Map<UserRoleDTO>(userRole);
         }
 
@@ -36,6 +37,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.UserRole.DeleteUserRole(userRole);
+            _repository.Save();
             return _mapper.Map<UserRoleDTO>(userRole);
         }
 
@@ -45,10 +47,10 @@ namespace users_api.BLL.Services
             return _mapper.Map<UserRoleDTO>(userRole);
         }
 
-        public IEnumerable<UserRoleDTO> GetAll(bool isTracking = false)
+        public IEnumerable<UserRoleDTO>? GetAll(bool isTracking = false)
         {
             var users = _repository.UserRole.GetAllUserRoles(isTracking);
-            return _mapper.Map<IQueryable<UserRoleDTO>>(users);
+            return _mapper.Map<IEnumerable<UserRoleDTO>?>(users);
         }
 
         public UserRoleDTO? Update(UserRoleForUpdateDTO item)
@@ -59,6 +61,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.UserRole.UpdateUserRole(userRole);
+            _repository.Save();
             return _mapper.Map<UserRoleDTO>(userRole);
         }
     }
