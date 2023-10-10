@@ -26,11 +26,11 @@ try
     builder.Services.AddControllers();
 
     builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
-    var config = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile> 
-    { 
+    var config = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile>
+    {
         new RoleProfile(),
         new UserProfile(),
-        new UserRoleProfile() 
+        new UserRoleProfile()
     }));
     builder.Services.AddScoped<IMapper>(x => new Mapper(config));
     builder.Services.AddScoped<ILoggerManager, LoggerManager>();
