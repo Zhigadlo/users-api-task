@@ -7,10 +7,9 @@ using NLog;
 using NLog.Web;
 using users_api.BLL.Managers;
 using users_api.BLL.Mapper;
-using users_api.BLL.Services;
 using users_api.DAL.EF;
 using users_api.DAL.Managers;
-using users_api.Extensions;
+using users_api.Middleware;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -38,20 +37,18 @@ try
     builder.Services.AddScoped<IMapper>(x => new Mapper(config));
     builder.Services.AddTransient<ILoggerManager, LoggerManager>();
     builder.Services.AddScoped<IServiceManager, ServiceManager>();
-    builder.Services.AddScoped<UserService>();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
     var app = builder.Build();
-    var loggerManager = app.Services.GetRequiredService<ILoggerManager>();
-    app.ConfigureExceptionHandler(loggerManager);
-
+    app.MigrateDatabase<UsersContext>();
 
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+    app.UseMiddleware<ExceptionMiddleware>();
 
     app.UseHttpsRedirection();
 
