@@ -1,5 +1,7 @@
 ﻿using Contracts.Service;
 using Entities.DataTransferObjects;
+using Entities.FilterModels;
+using Entities.Pagination;
 using Microsoft.AspNetCore.Mvc;
 
 namespace users_api.Controllers
@@ -13,6 +15,14 @@ namespace users_api.Controllers
         {
             _serviceManager = serviceManager;
         }
+
+        [HttpGet("{PageNumber}/{PageSize}/")]
+        public IActionResult GetPage([FromRoute] PaginationModel userPaginationModel,[FromQuery] UserFilterModel userFilter)
+        {
+            var users = _serviceManager.User.GetPage(userPaginationModel, userFilter);
+            return Ok(users);
+        }
+
         [HttpGet]
         public IActionResult GetUsers()
         {
