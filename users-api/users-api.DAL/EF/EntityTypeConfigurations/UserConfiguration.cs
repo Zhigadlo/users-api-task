@@ -12,7 +12,7 @@ namespace users_api.DAL.EF.EntityTypeConfigurations
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).IsRequired();
             builder.Property(x => x.Age).IsRequired();
-            builder.Property(x => x.Email).IsRequired();
+            builder.HasIndex(x => x.Email).IsUnique();
 
             builder.HasMany(u => u.Roles)
                    .WithMany(r => r.Users)

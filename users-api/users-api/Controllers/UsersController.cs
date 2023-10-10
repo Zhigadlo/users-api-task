@@ -17,7 +17,7 @@ namespace users_api.Controllers
         }
 
         [HttpGet("{PageNumber}/{PageSize}/")]
-        public IActionResult GetPage([FromRoute] PaginationModel userPaginationModel,[FromQuery] UserFilterModel userFilter)
+        public IActionResult GetPage([FromRoute] PaginationModel userPaginationModel, [FromQuery] UserFilterModel userFilter)
         {
             var users = _serviceManager.User.GetPage(userPaginationModel, userFilter);
             return Ok(users);
