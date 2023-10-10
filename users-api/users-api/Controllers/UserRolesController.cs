@@ -1,5 +1,6 @@
 ﻿using Contracts.Service;
 using Entities.DataTransferObjects;
+using Entities.ErrorModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace users_api.Controllers
@@ -15,12 +16,18 @@ namespace users_api.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 404)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult Get(int id)
         {
             var userRole = _serviceManager.UserRole.Get(id, false);
             return Ok(userRole);
         }
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 400)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult GetAll()
         {
             var userRoles = _serviceManager.UserRole.GetAll(false);
@@ -28,6 +35,9 @@ namespace users_api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 400)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult Create([FromBody] UserRoleForCreationDTO userRoleForCreationDTO)
         {
             var userRole = _serviceManager.UserRole.Create(userRoleForCreationDTO);
@@ -35,6 +45,9 @@ namespace users_api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 404)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult Delete(int id)
         {
             var userRole = _serviceManager.UserRole.Delete(id);
@@ -42,6 +55,9 @@ namespace users_api.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 400)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult Update([FromBody] UserRoleForUpdateDTO userRoleForUpdateDTO)
         {
             var userRole = _serviceManager.UserRole.Update(userRoleForUpdateDTO);

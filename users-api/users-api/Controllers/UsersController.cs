@@ -1,5 +1,6 @@
 ﻿using Contracts.Service;
 using Entities.DataTransferObjects;
+using Entities.ErrorModels;
 using Entities.FilterModels;
 using Entities.Pagination;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,9 @@ namespace users_api.Controllers
         }
 
         [HttpGet("{PageNumber}/{PageSize}/")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 400)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult GetPage([FromRoute] PaginationModel userPaginationModel, [FromQuery] UserFilterModel userFilter)
         {
             var users = _serviceManager.User.GetPage(userPaginationModel, userFilter);
@@ -24,6 +28,9 @@ namespace users_api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 400)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult GetUsers()
         {
             var companies = _serviceManager.User.GetAll(false);
@@ -31,6 +38,9 @@ namespace users_api.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 404)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult Get(int id)
         {
             var userDto = _serviceManager.User.Get(id, false);
@@ -38,6 +48,9 @@ namespace users_api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 400)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult Create([FromBody] UserForCreationDTO userForCreationDTO)
         {
             var result = _serviceManager.User.Create(userForCreationDTO);
@@ -45,6 +58,9 @@ namespace users_api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 404)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult Delete(int id)
         {
             var result = _serviceManager.User.Delete(id);
@@ -52,6 +68,9 @@ namespace users_api.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorDetails), 400)]
+        [ProducesResponseType(typeof(ErrorDetails), 500)]
         public IActionResult Update([FromBody] UserForUpdateDTO userForUpdateDTO)
         {
             var result = _serviceManager.User.Update(userForUpdateDTO);
