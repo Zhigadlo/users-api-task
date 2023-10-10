@@ -12,7 +12,7 @@ namespace users_api.DAL.Repositories
 
         public void CreateRole(Role role) => Create(role);
         public void DeleteRole(Role role) => Delete(role);
-        public IEnumerable<Role> GetAllRoles(bool trackChanges) => FindAll(trackChanges).OrderBy(x => x.Name).ToList();
+        public IQueryable<Role> GetAllRoles(bool trackChanges) => FindAll(trackChanges).OrderBy(x => x.Name).AsQueryable();
         public Role? GetRole(int id, bool trackChanges) => FindByCondition(p => p.Id.Equals(id), trackChanges).SingleOrDefault();
         public void UpdateRole(Role role) => Update(role);
     }

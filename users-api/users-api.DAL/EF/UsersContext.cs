@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using users_api.DAL.EF.EntityTypeConfigurations;
 
 namespace users_api.DAL.EF
