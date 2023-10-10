@@ -6,7 +6,7 @@ using users_api.BLL.Validation;
 
 namespace users_api.BLL.Services
 {
-    public class RoleService : IService<RoleDTO>
+    public class RoleService : IService<RoleDTO, RoleForCreationDTO,RoleForUpdateDTO>
     {
         private IRepositoryManager _repository;
         private IMapper _mapper;
@@ -17,7 +17,7 @@ namespace users_api.BLL.Services
             _mapper = mapper;
             _validator = new RoleValidator();
         }
-        public RoleDTO? Create(RoleDTO entity)
+        public RoleDTO? Create(RoleForCreationDTO entity)
         {
             Role role = _mapper.Map<Role>(entity);
             var result = _validator.Validate(role);
@@ -25,7 +25,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.Role.CreateRole(role);
-            return entity;
+            return _mapper.Map<RoleDTO>(role);
         }
 
         public RoleDTO? Delete(int id)
@@ -44,13 +44,13 @@ namespace users_api.BLL.Services
             return _mapper.Map<RoleDTO>(user);
         }
 
-        public IQueryable<RoleDTO>? GetAll(bool trackChanges)
+        public IEnumerable<RoleDTO>? GetAll(bool trackChanges)
         {
             var roles = _repository.User.GetAllUsers(trackChanges);
             return _mapper.Map<IQueryable<RoleDTO>>(roles);
         }
 
-        public RoleDTO? Update(RoleDTO entity)
+        public RoleDTO? Update(RoleForUpdateDTO entity)
         {
             Role role = _mapper.Map<Role>(entity);
             var result = _validator.Validate(role);
@@ -58,7 +58,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.Role.UpdateRole(role);
-            return entity;
+            return _mapper.Map<RoleDTO>(role);
         }
     }
 }

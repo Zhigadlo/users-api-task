@@ -6,7 +6,7 @@ using users_api.BLL.Validation;
 
 namespace users_api.BLL.Services
 {
-    public class UserService : IService<UserDTO>
+    public class UserService : IService<UserDTO, UserForCreationDTO, UserForUpdateDTO>
     {
         private IRepositoryManager _repository;
         private IMapper _mapper;
@@ -18,7 +18,7 @@ namespace users_api.BLL.Services
             _validator = new UserValidator();
         }
 
-        public UserDTO? Create(UserDTO item)
+        public UserDTO? Create(UserForCreationDTO item)
         {
             User user = _mapper.Map<User>(item);
             var result = _validator.Validate(user);
@@ -26,7 +26,8 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.User.CreateUser(user);
-            return item;
+            _repository.Save();
+            return _mapper.Map<UserDTO>(user);
         }
 
         public UserDTO? Delete(int id)
@@ -36,6 +37,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.User.DeleteUser(user);
+            _repository.Save();
             return _mapper.Map<UserDTO>(user);
         }
 
@@ -45,13 +47,13 @@ namespace users_api.BLL.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public IQueryable<UserDTO> GetAll(bool isTracking = false)
+        public IEnumerable<UserDTO> GetAll(bool isTracking = false)
         {
             var users = _repository.User.GetAllUsers(isTracking);
-            return _mapper.Map<IQueryable<UserDTO>>(users);
+            return _mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
-        public UserDTO? Update(UserDTO item)
+        public UserDTO? Update(UserForUpdateDTO item)
         {
             User user = _mapper.Map<User>(item);
             var result = _validator.Validate(user);
@@ -59,7 +61,8 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.User.UpdateUser(user);
-            return item;
+            _repository.Save();
+            return _mapper.Map<UserDTO>(user);
         }
     }
 }

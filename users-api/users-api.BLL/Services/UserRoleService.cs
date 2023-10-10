@@ -6,7 +6,7 @@ using users_api.BLL.Validation;
 
 namespace users_api.BLL.Services
 {
-    public class UserRoleService : IService<UserRole>
+    public class UserRoleService : IService<UserRoleDTO, UserRoleForCreationDTO, UserRoleForUpdateDTO>
     {
         private IRepositoryManager _repository;
         private IMapper _mapper;
@@ -18,7 +18,7 @@ namespace users_api.BLL.Services
             _validator = new UserRoleValidator();
         }
 
-        public UserRoleDTO? Create(UserRoleDTO item)
+        public UserRoleDTO? Create(UserRoleForCreationDTO item)
         {
             UserRole userRole = _mapper.Map<UserRole>(item);
             var result = _validator.Validate(userRole);
@@ -26,7 +26,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.UserRole.CreateUserRole(userRole);
-            return item;
+            return _mapper.Map<UserRoleDTO>(userRole);
         }
 
         public UserRoleDTO? Delete(int id)
@@ -45,13 +45,13 @@ namespace users_api.BLL.Services
             return _mapper.Map<UserRoleDTO>(userRole);
         }
 
-        public IQueryable<UserRoleDTO> GetAll(bool isTracking = false)
+        public IEnumerable<UserRoleDTO> GetAll(bool isTracking = false)
         {
             var users = _repository.UserRole.GetAllUserRoles(isTracking);
             return _mapper.Map<IQueryable<UserRoleDTO>>(users);
         }
 
-        public UserDTO? Update(UserDTO item)
+        public UserRoleDTO? Update(UserRoleForUpdateDTO item)
         {
             UserRole userRole = _mapper.Map<UserRole>(item);
             var result = _validator.Validate(userRole);
@@ -59,7 +59,7 @@ namespace users_api.BLL.Services
                 return null;
 
             _repository.UserRole.UpdateUserRole(userRole);
-            return item;
+            return _mapper.Map<UserRoleDTO>(userRole);
         }
     }
 }
