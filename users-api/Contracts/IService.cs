@@ -1,11 +1,13 @@
 ﻿namespace Contracts
 {
-    public interface IService<T> where T : class
+    public interface IService<Tdto, TdtoForCreation, TdtoForUpdate> where Tdto : class
+                                                                    where TdtoForCreation : class
+                                                                    where TdtoForUpdate : class
     {
-        T? Create(T entity);
-        T? Delete(int id);
-        IQueryable<T>? GetAll(bool trackChanges);
-        T? Get(int id, bool trackChanges);
-        T? Update(T entity);
+        Tdto? Create(TdtoForCreation entity);
+        Tdto? Delete(int id);
+        IEnumerable<Tdto>? GetAll(bool trackChanges);
+        Tdto? Get(int id, bool trackChanges);
+        Tdto? Update(TdtoForUpdate entity);
     }
 }

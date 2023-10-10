@@ -4,9 +4,8 @@ namespace Contracts
 {
     public interface IServiceManager
     {
-        IService<UserDTO> User { get; }
-        IService<RoleDTO> Role { get; }
-        IService<UserRoleDTO> UserRole { get; }
-        void Save();
+        IService<UserDTO, UserForCreationDTO, UserForUpdateDTO> User { get; }
+        IService<RoleDTO, RoleForCreationDTO, RoleForUpdateDTO> Role { get; }
+        IService<UserRoleDTO, UserRoleForCreationDTO, UserRoleForUpdateDTO> UserRole { get; }
     }
 }
