@@ -1,8 +1,7 @@
 ﻿namespace Entities.DataTransferObjects
 {
-    public class RoleDTO
+    public class RoleForCreationDTO
     {
-        public int Id { get; set; }
         public string Name { get; set; }
     }
 }
