@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using users_api.BLL.Interfaces;
-using users_api.BLL.Services;
+﻿using Contracts;
+using Entities.DataTransferObjects;
+using Microsoft.AspNetCore.Mvc;
 
 namespace users_api.Controllers
 {
@@ -8,26 +8,44 @@ namespace users_api.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
-        private UserService _service;
-        private ILoggerManager _loggerManager;
-        public UsersController(UserService service, ILoggerManager loggerManager)
+        private IServiceManager _serviceManager;
+        public UsersController(IServiceManager serviceManager)
         {
-            _service = service;
-            _loggerManager = loggerManager;
+            _serviceManager = serviceManager;
         }
         [HttpGet]
         public IActionResult GetUsers()
         {
-            try
-            {
-                var companies = _service.GetAll(false);
-                return Ok(companies);
-            }
-            catch (Exception ex)
-            {
-                _loggerManager.LogError($"Something went wrong in the {nameof(GetUsers)} action {ex}");
-                return StatusCode(500, "Internal server error");
-            }
+            var companies = _serviceManager.User.GetAll(false);
+            return Ok(companies);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var userDto = _serviceManager.User.Get(id, false);
+            return Ok(userDto);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] UserForCreationDTO userForCreationDTO)
+        {
+            var result = _serviceManager.User.Create(userForCreationDTO);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var result = _serviceManager.User.Delete(id);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        public IActionResult Update([FromBody] UserForUpdateDTO userForUpdateDTO)
+        {
+            var result = _serviceManager.User.Update(userForUpdateDTO);
+            return Ok(result);
         }
     }
 }
