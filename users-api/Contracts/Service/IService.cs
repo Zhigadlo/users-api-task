@@ -1,4 +1,4 @@
-﻿namespace Contracts
+﻿namespace Contracts.Service
 {
     public interface IService<Tdto, TdtoForCreation, TdtoForUpdate> where Tdto : class
                                                                     where TdtoForCreation : class

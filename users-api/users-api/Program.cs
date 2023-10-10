@@ -1,5 +1,7 @@
 using AutoMapper;
-using Contracts;
+using Contracts.Logger;
+using Contracts.Repository;
+using Contracts.Service;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;

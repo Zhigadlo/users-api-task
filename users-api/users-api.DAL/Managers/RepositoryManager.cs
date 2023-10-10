@@ -1,4 +1,4 @@
-﻿using Contracts;
+﻿using Contracts.Repository;
 using users_api.DAL.EF;
 using users_api.DAL.Repositories;
 

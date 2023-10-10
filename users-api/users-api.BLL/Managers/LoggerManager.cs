@@ -1,4 +1,4 @@
-﻿using Contracts;
+﻿using Contracts.Logger;
 using NLog;
 
 namespace users_api.BLL.Managers

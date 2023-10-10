@@ -1,6 +1,6 @@
 ﻿using Entities.DataTransferObjects;
 
-namespace Contracts
+namespace Contracts.Service
 {
     public interface IServiceManager
     {

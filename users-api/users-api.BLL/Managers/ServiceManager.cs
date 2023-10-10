@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Contracts;
+using Contracts.Repository;
+using Contracts.Service;
 using Entities.DataTransferObjects;
 using users_api.BLL.Services;
 

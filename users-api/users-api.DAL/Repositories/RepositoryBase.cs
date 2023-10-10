@@ -1,4 +1,4 @@
-﻿using Contracts;
+﻿using Contracts.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using users_api.DAL.EF;

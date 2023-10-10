@@ -1,4 +1,4 @@
-﻿using Contracts;
+﻿using Contracts.Service;
 using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 

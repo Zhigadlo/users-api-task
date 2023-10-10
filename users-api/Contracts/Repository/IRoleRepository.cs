@@ -1,6 +1,6 @@
 ﻿using Entities;
 
-namespace Contracts
+namespace Contracts.Repository
 {
     public interface IRoleRepository
     {
