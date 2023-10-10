@@ -9,6 +9,7 @@ using users_api.BLL.Managers;
 using users_api.BLL.Mapper;
 using users_api.DAL.EF;
 using users_api.DAL.Managers;
+using users_api.Extensions;
 using users_api.Middleware;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();

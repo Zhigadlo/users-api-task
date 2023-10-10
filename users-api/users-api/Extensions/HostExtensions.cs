@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace users_api.Middleware
+namespace users_api.Extensions
 {
     public static class HostExtensions
     {
