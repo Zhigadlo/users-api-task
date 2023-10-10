@@ -1,5 +1,5 @@
-﻿using NLog;
-using users_api.BLL.Interfaces;
+﻿using Contracts;
+using NLog;
 
 namespace users_api.BLL.Managers
 {
